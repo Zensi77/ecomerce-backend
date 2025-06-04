@@ -1,0 +1,140 @@
+services:
+  python:
+    build: ./scraping
+    container_name: python
+    tty: true # Para evitar que el contenedor se detenga
+    working_dir: /scraping
+    environment:
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=root
+      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DB_HOST=db-sql
+      - DB_PORT=3306
+      - OLLAMA_HOST=ollama
+    volumes:
+      - ./scraping:/scraping
+    networks:
+      - ollama-net
+      - backend-net
+  ollama:
+    image: ollama/ollama:latest
+    restart: always
+    ports:
+      - '11434:11434'
+    networks:
+      - ollama-net
+    volumes:
+      - ollama-local:/root/.ollama
+    dns: 8.8.8.8 # DNS de Google
+    environment:
+      - OLLAMA_INSECURE=true
+      - TZ=UTC
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1 # Deshabilitar IPv6
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:11434 || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    entrypoint: ['/bin/ollama']
+    command: ['serve']
+
+  db-sql:
+    image: mysql:8.0
+    container_name: db-sql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '3306:3306'
+    networks:
+      - backend-net
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'mysql',
+          '--user=${MYSQL_USER}',
+          '--password=${MYSQL_PASSWORD}',
+          '-e',
+          'SHOW DATABASES;',
+        ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  php-myadmin:
+    image: phpmyadmin
+    container_name: myadmin
+    ports:
+      - 8081:80
+    networks:
+      - backend-net
+    environment:
+      - PMA_HOST=db-sql
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      db-sql:
+        condition: service_healthy
+
+  artemis-mq:
+    image: apache/activemq-artemis:2.40.0
+    container_name: artemis-mq
+    volumes:
+      - artemis:/var/lib/artemis-instance
+    environment:
+      ARTEMIS_USER: 'admin'
+      ARTEMIS_PASSWORD: 'admin'
+    ports:
+      - '8161:8161'
+      - '61616:61616'
+
+  infinispan:
+    image: infinispan/server:14.0.5.Final
+    container_name: infinispan
+    ports:
+      - '11222:11222'
+    environment:
+      USER: ${INFINISPAN_USER}
+      PASS: ${INFINISPAN_PASSWORD}
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:7.6.2
+    ports:
+      - 9200:9200
+    environment:
+      - 'ES_JAVA_OPTS=-Xms2048m -Xmx2048m'
+      - 'discovery.type=single-node'
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data/
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.6.2
+    container_name: kibana
+    ports:
+      - '5601:5601'
+    depends_on:
+      - elasticsearch
+    environment:
+      - 'ELASTICSEARCH_HOSTS=http://elasticsearch:9200'
+volumes:
+  db_data:
+  artemis:
+  elasticsearch-data:
+  ollama-local:
+  open-webui-local:
+    external: true
+
+networks:
+  infinispan:
+    driver: bridge
+  ollama-net:
+  backend-net:

@@ -1,0 +1,36 @@
+{
+    "mappings": {
+        "properties": {
+            "id": {
+                "type": "keyword"
+            },
+            "event": {
+                "type": "keyword"
+            },
+            "timestamp": {
+                "type": "date"
+            },
+            "userId": {
+                "type": "keyword"
+            },
+            "product_id": {
+                "type": "keyword"
+            },
+            "quantity": {
+                "type": "long"
+            },
+            "order_total": {
+                "type": "float"
+            },
+            "items_count": {
+                "type": "long"
+            },
+            "payment_method": {
+                "type": "keyword"
+            },
+            "location": {
+                "type": "geo_point"
+            }
+        }
+    }
+}

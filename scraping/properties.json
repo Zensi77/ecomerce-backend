@@ -1,0 +1,50 @@
+    {
+        "fonts": {
+            "pcbox": "https://www.pcbox.com/",
+            "coolmod": "https://www.coolmod.com/"
+        },
+        "inputSearch": {
+            "pcbox": "input#FastIntelligentSearchInput",
+            "coolmod": "input#seek"
+        },
+        "cardProduct": {
+            "pcbox": "article.vtex-product-summary-2-x-element",
+            "coolmod": "div.dfd-card.dfd-card-preset-product.dfd-card-type-indiceproductos"
+        },
+        "searchterms": {
+            "0": "ordenador",
+            "1": "portátil",
+            "2": "televisor",
+            "3": "monitor",
+            "4": "movil",
+            "5": "tablet",
+            "6": "ratón gamer",
+            "7": "refrigerador",
+            "8": "consola",
+            "9": "router",
+            "10": "auriculares",
+            "11": "camara",
+            "12": "impresora",
+            "13": "smartwatch",
+            "14": "dron",
+            "15": "microprocesador"
+        },
+        "data": {
+            "nombre": {
+                "pcbox": "span.vtex-product-summary-2-x-productBrand.vtex-product-summary-2-x-brandName.t-body",
+                "coolmod": "div.dfd-card-title"
+            },
+            "precio": {
+                "pcbox": "span.ticnova-product-price-1-x-currencyInteger",
+                "coolmod": "span.dfd-card-price"
+            },
+            "decimal": {
+                "pcbox": "span.ticnova-product-price-1-x-currencyFraction",
+                "coolmod": ""
+            },
+            "imagen": {
+                "pcbox": "img.vtex-product-summary-2-x-imageNormal.vtex-product-summary-2-x-image",
+                "coolmod": "div.dfd-card-media div.dfd-card-thumbnail img"
+            }
+        }
+    }
