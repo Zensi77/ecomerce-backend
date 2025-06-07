@@ -34,15 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class OrderServiceImpl implements IOrderService {
-
-    @Value("${stripe.api.key}")
-    private String apiKey;
-
-    @PostConstruct()
-    public void init() {
-        Stripe.apiKey = apiKey;
-    }
-
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
