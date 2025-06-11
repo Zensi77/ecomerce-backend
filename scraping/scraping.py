@@ -170,7 +170,7 @@ def getDescription(data, search_term):
         
         # Configurar la petición a Ollama
         payload = {
-            "model": "llama3.2",
+            "model": "llama3",
             "prompt": prompt,
             "stream": False
         }

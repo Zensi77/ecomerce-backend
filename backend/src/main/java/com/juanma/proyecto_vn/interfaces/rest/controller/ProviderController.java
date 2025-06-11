@@ -49,6 +49,7 @@ public class ProviderController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> createProvider(@RequestBody @Valid ProviderDto providerDto, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
@@ -59,6 +60,7 @@ public class ProviderController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateProvider(@PathVariable @Valid UUID id, @RequestBody ProviderDto providerDto,
             BindingResult result) {
         if (result.hasErrors()) {
@@ -70,6 +72,7 @@ public class ProviderController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProvider(@PathVariable UUID id) {
         providerService.deleteProvider(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

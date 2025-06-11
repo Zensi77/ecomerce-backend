@@ -7,8 +7,8 @@ services:
     environment:
       - DB_NAME=${MYSQL_DATABASE}
       - DB_USER=root
-      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - DB_HOST=db-sql
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_HOST=${DB_HOST}
       - DB_PORT=3306
       - OLLAMA_HOST=ollama
     volumes:

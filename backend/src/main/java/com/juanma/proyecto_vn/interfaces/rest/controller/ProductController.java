@@ -155,6 +155,7 @@ public class ProductController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> createProduct(@Valid @RequestBody CreateProductDto createProductDto,
             BindingResult result) {
         if (result.hasErrors()) {
@@ -191,6 +192,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> updateProduct(@PathVariable UUID id,
             @Valid @RequestBody CreateProductDto updateProductDto,
             BindingResult result) {
@@ -218,6 +220,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteProduct(@PathVariable UUID id) {
         try {
             Product deletedProduct = productService.deleteProduct(id);
