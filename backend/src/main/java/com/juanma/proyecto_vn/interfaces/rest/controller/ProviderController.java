@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.juanma.proyecto_vn.domain.service.IProviderService;
 import com.juanma.proyecto_vn.interfaces.rest.dtos.provider.ProviderDto;
 import com.juanma.proyecto_vn.interfaces.rest.mapper.ProviderDtoMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.validation.Valid;
 

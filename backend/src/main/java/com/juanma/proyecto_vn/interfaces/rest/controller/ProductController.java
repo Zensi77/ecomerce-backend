@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.juanma.proyecto_vn.domain.model.Product;
 import com.juanma.proyecto_vn.domain.service.IProductService;
@@ -254,7 +255,6 @@ public class ProductController {
         try {
             List<Product> wishlist = userService.getUserWishlist(userId);
 
-            // Usamos el nuevo método optimizado para convertir la lista completa
             List<GetProductDto> wishlistDtos = productDtoMapper.toDtoList(wishlist, userId.toString());
 
             return ResponseEntity.ok(wishlistDtos);
