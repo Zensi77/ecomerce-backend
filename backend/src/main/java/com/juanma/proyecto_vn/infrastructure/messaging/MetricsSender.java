@@ -58,19 +58,19 @@ public class MetricsSender {
      * @param extra     Información adicional sobre el evento.
      */
     public void sendFunnelEvent(String event, String userId, Map<String, Object> extra) {
-        ArrayList<Double> location = getLocation();
+        // ArrayList<Double> location = getLocation();
 
         Map<String, Object> metric = new HashMap<>();
         metric.put("id", "FUNNEL_EVENT");
         metric.put("event", event);
         metric.put("timestamp", Instant.now().toString());
         metric.put("user_id", userId);
-        metric.put("lat", location.get(0));
-        metric.put("lng", location.get(1));
+        // metric.put("lat", location.get(0));
+        // metric.put("lng", location.get(1));
         metric.putAll(extra);
 
         try {
-                jms.convertAndSend("metrics-queue", metric);
+            jms.convertAndSend("metrics-queue", metric);
         } catch (JmsException e) {
             log.error("Error al enviar la métrica de funnel: {}", e.getMessage());
         }
@@ -96,7 +96,6 @@ public class MetricsSender {
 
         log.info("Enviando métrica de rendimiento: {}", metric);
     }
-
 
     private ArrayList<Double> getLocation() {
         String clientIp = MDC.get("clientIp");
